@@ -1,9 +1,9 @@
-local config = require("pi-review.config")
+local config = require("agent-review.config")
 
 local M = {}
 
 function M.notify(message, level)
-  vim.notify("[pi-review] " .. message, level or vim.log.levels.INFO)
+  vim.notify("[agent-review] " .. message, level or vim.log.levels.INFO)
 end
 
 function M.now()

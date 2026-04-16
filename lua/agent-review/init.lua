@@ -1,12 +1,12 @@
-local comments = require("pi-review.comments")
-local commands = require("pi-review.commands")
-local config = require("pi-review.config")
-local editor = require("pi-review.editor")
-local exporter = require("pi-review.export")
-local float = require("pi-review.float")
-local picker = require("pi-review.picker")
-local signs = require("pi-review.signs")
-local util = require("pi-review.util")
+local comments = require("agent-review.comments")
+local commands = require("agent-review.commands")
+local config = require("agent-review.config")
+local editor = require("agent-review.editor")
+local exporter = require("agent-review.export")
+local float = require("agent-review.float")
+local picker = require("agent-review.picker")
+local signs = require("agent-review.signs")
+local util = require("agent-review.util")
 
 local M = {}
 
@@ -34,7 +34,7 @@ local function ensure_initialized()
   signs.define()
   commands.register()
 
-  state.augroup = vim.api.nvim_create_augroup("PiReview", { clear = true })
+  state.augroup = vim.api.nvim_create_augroup("AgentReview", { clear = true })
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
     group = state.augroup,
     callback = function(args)
@@ -45,14 +45,14 @@ local function ensure_initialized()
   vim.api.nvim_create_autocmd({ "CursorMoved", "BufEnter" }, {
     group = state.augroup,
     callback = function()
-      require("pi-review")._handle_cursor_activity()
+      require("agent-review")._handle_cursor_activity()
     end,
   })
 
   vim.api.nvim_create_autocmd({ "InsertEnter", "BufLeave", "WinLeave" }, {
     group = state.augroup,
     callback = function()
-      require("pi-review")._cancel_hover()
+      require("agent-review")._cancel_hover()
       float.close()
     end,
   })
@@ -302,7 +302,7 @@ function M.delete()
   end
 
   vim.ui.select(matches, {
-    prompt = "Delete pi-review comment",
+    prompt = "Delete agent-review comment",
     format_item = function(comment)
       return string.format("%s — %s", comment_label(comment), util.truncate(comment.text:gsub("%s+", " "), 80))
     end,

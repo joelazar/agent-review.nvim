@@ -1,4 +1,4 @@
-local util = require("pi-review.util")
+local util = require("agent-review.util")
 
 local M = {}
 

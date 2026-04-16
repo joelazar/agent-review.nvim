@@ -2,7 +2,7 @@ local M = {}
 
 M.defaults = {
   sign = {
-    name = "PiReviewComment",
+    name = "AgentReviewComment",
     text = "●",
     texthl = "DiagnosticHint",
     linehl = "",
@@ -24,7 +24,7 @@ M.defaults = {
     delay = 600,
   },
   picker = {
-    title = "Pi Review Comments",
+    title = "Agent Review Comments",
   },
   export = {
     copy_to_clipboard = true,
@@ -32,7 +32,7 @@ M.defaults = {
   },
   storage = {
     persist = false,
-    root_dir = vim.fn.stdpath("state") .. "/pi-review",
+    root_dir = vim.fn.stdpath("state") .. "/agent-review",
   },
 }
 

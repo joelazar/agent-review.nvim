@@ -1,5 +1,5 @@
-local store = require("pi-review.store")
-local util = require("pi-review.util")
+local store = require("agent-review.store")
+local util = require("agent-review.util")
 
 local M = {}
 

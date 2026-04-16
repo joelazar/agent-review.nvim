@@ -1,13 +1,13 @@
-local comments = require("pi-review.comments")
-local config = require("pi-review.config")
-local util = require("pi-review.util")
+local comments = require("agent-review.comments")
+local config = require("agent-review.config")
+local util = require("agent-review.util")
 
 local M = {}
 
 local function session_target()
-  local path = vim.g.pi_review_export_path or vim.env.PI_REVIEW_EXPORT_PATH
-  local token = vim.g.pi_review_export_token or vim.env.PI_REVIEW_EXPORT_TOKEN
-  local root = vim.g.pi_review_export_root or vim.env.PI_REVIEW_EXPORT_ROOT
+  local path = vim.g.agent_review_export_path or vim.env.AGENT_REVIEW_EXPORT_PATH
+  local token = vim.g.agent_review_export_token or vim.env.AGENT_REVIEW_EXPORT_TOKEN
+  local root = vim.g.agent_review_export_root or vim.env.AGENT_REVIEW_EXPORT_ROOT
   if type(path) ~= "string" or path == "" then
     return nil
   end
@@ -186,7 +186,7 @@ function M.open(root)
   vim.bo[buf].swapfile = false
   vim.bo[buf].modifiable = false
   vim.bo[buf].filetype = "markdown"
-  vim.api.nvim_buf_set_name(buf, "pi-review-export.md")
+  vim.api.nvim_buf_set_name(buf, "agent-review-export.md")
   vim.api.nvim_set_current_buf(buf)
 
   local export_cfg = config.get().export

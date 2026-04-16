@@ -1,4 +1,4 @@
-local config = require("pi-review.config")
+local config = require("agent-review.config")
 
 local M = {}
 
@@ -60,7 +60,7 @@ function M.open(opts, on_done)
   local width = math.min(editor_cfg.width, math.max(40, vim.o.columns - 8))
   local desired_height = math.max(editor_cfg.min_height, #lines + 2)
   local height = math.min(desired_height, math.max(editor_cfg.min_height, vim.o.lines - 8))
-  local title = truncate_title(opts.title or "pi-review comment", math.max(20, width - 6))
+  local title = truncate_title(opts.title or "agent-review comment", math.max(20, width - 6))
 
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)

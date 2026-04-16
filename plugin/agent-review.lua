@@ -1,0 +1,1 @@
+require("agent-review").setup()

@@ -1,10 +1,10 @@
-local comments = require("pi-review.comments")
-local config = require("pi-review.config")
-local util = require("pi-review.util")
+local comments = require("agent-review.comments")
+local config = require("agent-review.config")
+local util = require("agent-review.util")
 
 local M = {}
 
-M.group = "pi-review"
+M.group = "agent-review"
 M.defined = false
 
 function M.define()

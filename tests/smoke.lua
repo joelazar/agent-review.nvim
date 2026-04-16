@@ -30,14 +30,14 @@ vim.fn.writefile(vim.split(sample, "\n", { plain = true }), sample_path)
 local session_export_path = tmp_root .. "/session-export.json"
 local session_export_token = "test-token-123"
 
-local pr = require("pi-review")
-local comments = require("pi-review.comments")
-local editor = require("pi-review.editor")
-local exporter = require("pi-review.export")
-local float = require("pi-review.float")
-local picker = require("pi-review.picker")
-local signs = require("pi-review.signs")
-local util = require("pi-review.util")
+local pr = require("agent-review")
+local comments = require("agent-review.comments")
+local editor = require("agent-review.editor")
+local exporter = require("agent-review.export")
+local float = require("agent-review.float")
+local picker = require("agent-review.picker")
+local signs = require("agent-review.signs")
+local util = require("agent-review.util")
 
 pr.setup({
   export = { copy_to_clipboard = false },
@@ -57,9 +57,9 @@ editor.open = function(_, on_confirm)
   on_confirm(table.remove(inputs, 1))
 end
 
-vim.cmd("2,2PiReviewComment")
-vim.cmd("3,4PiReviewComment")
-vim.cmd("PiReviewFileComment")
+vim.cmd("2,2AgentReviewComment")
+vim.cmd("3,4AgentReviewComment")
+vim.cmd("AgentReviewFileComment")
 
 local ctx = assert(util.current_context(0))
 local export_path = util.normalize(util.join(ctx.root, ctx.file_rel))
@@ -93,9 +93,9 @@ assert(export_text:find("function M.one%(%)") or export_text:find("function M.on
 assert(export_text:find("local value = 1", 1, true), "missing range snippet")
 assert(export_text:find("return value", 1, true), "missing range snippet tail")
 
-vim.g.pi_review_export_path = session_export_path
-vim.g.pi_review_export_token = session_export_token
-vim.g.pi_review_export_root = repo_dir
+vim.g.agent_review_export_path = session_export_path
+vim.g.agent_review_export_token = session_export_token
+vim.g.agent_review_export_root = repo_dir
 assert(exporter.flush_session(ctx.root) == true, "expected session export to be written")
 local export_payload = vim.json.decode(table.concat(vim.fn.readfile(session_export_path), "\n"))
 assert(export_payload.token == session_export_token, "session export token mismatch")
@@ -167,7 +167,7 @@ assert(vim.wait(200, function()
 end), "moving away should close float")
 
 vim.api.nvim_win_set_cursor(0, { 2, 0 })
-vim.cmd("PiReviewDelete")
+vim.cmd("AgentReviewDelete")
 
 items = comments.list(ctx.root)
 assert(#items == 2, "expected 2 comments after delete, got " .. #items)
@@ -186,7 +186,7 @@ assert(pr.delete_comment(ctx.root, items[2]) == true, "expected range comment de
 assert(exporter.flush_session(ctx.root) == false, "session export should clear when no comments remain")
 assert(not util.exists(session_export_path), "session export file should be removed when empty")
 
-print("pi-review smoke ok")
+print("agent-review smoke ok")
 print(export_text)
 
 vim.fn.delete(tmp_root, "rf")

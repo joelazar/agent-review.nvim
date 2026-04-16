@@ -1,6 +1,6 @@
-# pi-review.nvim
+# agent-review.nvim
 
-`pi-review.nvim` is a small Neovim plugin for leaving review notes in code and turning them into a prompt you can send back to pi.
+`agent-review.nvim` is a small Neovim plugin for leaving review notes in code and turning them into a prompt you can send back to your coding agent.
 
 ## Features
 
@@ -17,7 +17,7 @@
 
 ```lua
 {
-  "joelazar/pi-review.nvim",
+  "joelazar/agent-review.nvim",
   dependencies = {
     "folke/snacks.nvim",
   },
@@ -28,7 +28,7 @@
 ## Setup
 
 ```lua
-require("pi-review").setup({
+require("agent-review").setup({
   sign = {
     text = "●",
     texthl = "DiagnosticHint",
@@ -49,12 +49,12 @@ require("pi-review").setup({
 
 ## Commands
 
-- `:PiReviewComment` — add or edit a comment on the current line or selected range
-- `:PiReviewFileComment` — add or edit a file comment
-- `:PiReviewToggle` — show or hide comments at the cursor
-- `:PiReviewDelete` — delete a comment at the cursor
-- `:PiReviewList` — open all comments for the current repo
-- `:PiReviewExport` — open the export in a scratch buffer
+- `:AgentReviewComment` — add or edit a comment on the current line or selected range
+- `:AgentReviewFileComment` — add or edit a file comment
+- `:AgentReviewToggle` — show or hide comments at the cursor
+- `:AgentReviewDelete` — delete a comment at the cursor
+- `:AgentReviewList` — open all comments for the current repo
+- `:AgentReviewExport` — open the export in a scratch buffer
 
 Inside the `Snacks` picker:
 
@@ -64,13 +64,13 @@ Inside the `Snacks` picker:
 ## Suggested keymaps
 
 ```lua
-vim.keymap.set("n", "<leader>rc", "<cmd>PiReviewComment<cr>")
-vim.keymap.set("x", "<leader>rc", ":PiReviewComment<cr>")
-vim.keymap.set("n", "<leader>rf", "<cmd>PiReviewFileComment<cr>")
-vim.keymap.set("n", "<leader>rt", "<cmd>PiReviewToggle<cr>")
-vim.keymap.set("n", "<leader>rd", "<cmd>PiReviewDelete<cr>")
-vim.keymap.set("n", "<leader>rl", "<cmd>PiReviewList<cr>")
-vim.keymap.set("n", "<leader>re", "<cmd>PiReviewExport<cr>")
+vim.keymap.set("n", "<leader>rc", "<cmd>AgentReviewComment<cr>")
+vim.keymap.set("x", "<leader>rc", ":AgentReviewComment<cr>")
+vim.keymap.set("n", "<leader>rf", "<cmd>AgentReviewFileComment<cr>")
+vim.keymap.set("n", "<leader>rt", "<cmd>AgentReviewToggle<cr>")
+vim.keymap.set("n", "<leader>rd", "<cmd>AgentReviewDelete<cr>")
+vim.keymap.set("n", "<leader>rl", "<cmd>AgentReviewList<cr>")
+vim.keymap.set("n", "<leader>re", "<cmd>AgentReviewExport<cr>")
 ```
 
 ## Export shape
@@ -80,13 +80,13 @@ The export stays short and starts with the file location:
 ````md
 Please address these review comments:
 
-- /absolute/path/to/lua/pi-review/export.lua:12
+- /absolute/path/to/lua/agent-review/export.lua:12
   This can be shorter and more direct.
   ```lua
   local value = build_something()
   ```
 
-- /absolute/path/to/lua/pi-review/init.lua:40-45
+- /absolute/path/to/lua/agent-review/init.lua:40-45
   Extract this block into a helper.
   ```lua
   if condition then
@@ -94,7 +94,7 @@ Please address these review comments:
   end
   ```
 
-- /absolute/path/to/lua/pi-review/store.lua
+- /absolute/path/to/lua/agent-review/store.lua
   This file is mixing storage and formatting concerns.
 ````
 
@@ -113,7 +113,7 @@ Comments are ephemeral by default, so they only live for the current Neovim sess
 If you want them to persist:
 
 ```lua
-require("pi-review").setup({
+require("agent-review").setup({
   storage = {
     persist = true,
   },
@@ -124,6 +124,4 @@ The comment editor opens in a small floating buffer. Press `<C-s>`, `<D-s>`, or 
 
 Hover preview is on by default. It opens after `hover.delay` milliseconds and disappears when you move away.
 
-If you launch Neovim from pi's `nvim` extension, comments are exported through a one-shot temp file on `VimLeavePre` and loaded back into pi's input editor when Neovim exits.
-
-See [PLAN.md](./PLAN.md) for the current plan.
+If you launch Neovim from a coding agent that sets the session export env vars (for example pi's `nvim` extension), comments are exported through a one-shot temp file on `VimLeavePre` and loaded back into the agent's input editor when Neovim exits.

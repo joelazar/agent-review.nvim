@@ -1,5 +1,5 @@
-local config = require("pi-review.config")
-local util = require("pi-review.util")
+local config = require("agent-review.config")
+local util = require("agent-review.util")
 
 local M = {}
 
@@ -8,7 +8,7 @@ M.buf = nil
 M.signature = nil
 
 local function render_lines(items)
-  local lines = { "pi-review", "" }
+  local lines = { "agent-review", "" }
   for index, comment in ipairs(items) do
     local label
     if comment.kind == "file" then

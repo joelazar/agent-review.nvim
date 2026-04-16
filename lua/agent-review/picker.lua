@@ -1,6 +1,6 @@
-local comments = require("pi-review.comments")
-local config = require("pi-review.config")
-local util = require("pi-review.util")
+local comments = require("agent-review.comments")
+local config = require("agent-review.config")
+local util = require("agent-review.util")
 
 local M = {}
 
@@ -94,7 +94,7 @@ function M.open(root)
         end
         picker:close()
         vim.schedule(function()
-          require("pi-review").edit_comment(item.root, item.comment)
+          require("agent-review").edit_comment(item.root, item.comment)
         end)
       end,
       comment_delete = function(picker)
@@ -104,7 +104,7 @@ function M.open(root)
         end
         local deleted = 0
         for _, item in ipairs(selected) do
-          if require("pi-review").delete_comment(item.root, item.comment) then
+          if require("agent-review").delete_comment(item.root, item.comment) then
             deleted = deleted + 1
           end
         end
