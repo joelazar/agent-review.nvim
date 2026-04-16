@@ -82,12 +82,14 @@ Please address these review comments:
 
 - /absolute/path/to/lua/agent-review/export.lua:12
   This can be shorter and more direct.
+
   ```lua
   local value = build_something()
   ```
 
 - /absolute/path/to/lua/agent-review/init.lua:40-45
   Extract this block into a helper.
+
   ```lua
   if condition then
     do_the_thing()
@@ -124,4 +126,4 @@ The comment editor opens in a small floating buffer. Press `<C-s>`, `<D-s>`, or 
 
 Hover preview is on by default. It opens after `hover.delay` milliseconds and disappears when you move away.
 
-If you launch Neovim from a coding agent that sets the session export env vars (for example pi's `nvim` extension), comments are exported through a one-shot temp file on `VimLeavePre` and loaded back into the agent's input editor when Neovim exits.
+If your agent launches Neovim and sets the `AGENT_REVIEW_EXPORT_PATH`, `AGENT_REVIEW_EXPORT_TOKEN`, and `AGENT_REVIEW_EXPORT_ROOT` env vars, comments are written to that path on `VimLeavePre` as a JSON payload (`{ version, token, root, text }`) and the agent can read it back when Neovim exits. [pi-nvim](https://github.com/joelazar/pi-nvim) is one such integration: it opens Neovim from inside [pi](https://github.com/badlogic/pi-mono) and drops the exported text into pi's input editor on return.
