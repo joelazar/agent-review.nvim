@@ -1,0 +1,1 @@
+require("pi-review").setup()
