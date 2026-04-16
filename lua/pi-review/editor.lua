@@ -5,6 +5,7 @@ local M = {}
 local state = {
   win = nil,
   buf = nil,
+  prev_win = nil,
 }
 
 local function truncate_title(text, max_width)
@@ -21,11 +22,18 @@ local function truncate_title(text, max_width)
 end
 
 local function close()
+  if state.win and vim.api.nvim_win_is_valid(state.win) and vim.api.nvim_get_current_win() == state.win then
+    vim.cmd.stopinsert()
+  end
   if state.win and vim.api.nvim_win_is_valid(state.win) then
     vim.api.nvim_win_close(state.win, true)
   end
+  if state.prev_win and vim.api.nvim_win_is_valid(state.prev_win) then
+    vim.api.nvim_set_current_win(state.prev_win)
+  end
   state.win = nil
   state.buf = nil
+  state.prev_win = nil
 end
 
 local function collect_text(buf)
@@ -46,6 +54,8 @@ function M.open(opts, on_done)
   end
 
   close()
+
+  state.prev_win = vim.api.nvim_get_current_win()
 
   local width = math.min(editor_cfg.width, math.max(40, vim.o.columns - 8))
   local desired_height = math.max(editor_cfg.min_height, #lines + 2)
@@ -106,7 +116,7 @@ function M.open(opts, on_done)
   state.buf = buf
 
   vim.schedule(function()
-    if vim.api.nvim_win_is_valid(win) then
+    if vim.api.nvim_win_is_valid(win) and vim.api.nvim_get_current_win() == win then
       vim.cmd.startinsert()
     end
   end)
