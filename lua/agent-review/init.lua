@@ -42,6 +42,15 @@ local function ensure_initialized()
     end,
   })
 
+  vim.api.nvim_create_autocmd({ "BufFilePost", "BufWritePost" }, {
+    group = state.augroup,
+    callback = function(args)
+      pcall(function()
+        vim.b[args.buf].agent_review_root = nil
+      end)
+    end,
+  })
+
   vim.api.nvim_create_autocmd({ "CursorMoved", "BufEnter" }, {
     group = state.augroup,
     callback = function()
@@ -337,6 +346,11 @@ end
 function M.export()
   M.setup()
   exporter.open(current_root())
+end
+
+-- Shortcut for the lualine component.
+function M.lualine(opts)
+  return require("agent-review.lualine").component(opts)
 end
 
 return M

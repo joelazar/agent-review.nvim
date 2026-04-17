@@ -37,6 +37,7 @@ local exporter = require("agent-review.export")
 local float = require("agent-review.float")
 local picker = require("agent-review.picker")
 local signs = require("agent-review.signs")
+local lualine_component = require("agent-review.lualine")
 local util = require("agent-review.util")
 
 pr.setup({
@@ -74,6 +75,15 @@ assert(items[3].text:find("Maybe move it to a helper", 1, true), "expected multi
 signs.refresh_buffer(0)
 local placed = vim.fn.sign_getplaced(vim.api.nvim_get_current_buf(), { group = signs.group })
 assert(#(placed[1].signs or {}) == 3, "expected 3 placed signs")
+
+assert(lualine_component.count(ctx.root) == 3, "lualine count should be 3")
+assert(lualine_component.status():find("3", 1, true), "lualine status should include count")
+local component_spec = pr.lualine()
+assert(type(component_spec) == "table" and type(component_spec[1]) == "function", "lualine component shape")
+assert(component_spec[1]():find("3", 1, true), "lualine component renders count")
+assert(component_spec.cond() == true, "lualine cond true when comments exist")
+local custom_spec = pr.lualine({ icon = "", format = "%s%d" })
+assert(custom_spec[1]() == "3", "custom lualine format respected")
 assert(placed[1].signs[1].lnum == 1, "file comment sign should be on line 1")
 assert(placed[1].signs[2].lnum == 2, "line comment sign should be on line 2")
 assert(placed[1].signs[3].lnum == 3, "range comment sign should be on range start")
@@ -183,6 +193,12 @@ assert(not export_after_delete:find("Line comment: consider renaming this functi
 
 assert(pr.delete_comment(ctx.root, items[1]) == true, "expected file comment delete")
 assert(pr.delete_comment(ctx.root, items[2]) == true, "expected range comment delete")
+
+assert(lualine_component.count(ctx.root) == 0, "lualine count should be 0 when empty")
+assert(lualine_component.status() == "", "lualine status empty when no comments")
+assert(pr.lualine().cond() == false, "lualine cond false when no comments")
+assert(pr.lualine({ show_zero = true }).cond() == true, "show_zero keeps component visible")
+
 assert(exporter.flush_session(ctx.root) == false, "session export should clear when no comments remain")
 assert(not util.exists(session_export_path), "session export file should be removed when empty")
 

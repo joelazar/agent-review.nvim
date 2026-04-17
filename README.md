@@ -100,6 +100,31 @@ Please address these review comments:
   This file is mixing storage and formatting concerns.
 ````
 
+## Lualine component
+
+Shows the comment count for the current repo. Hidden when the count is zero.
+Click it to run `:AgentReviewList`.
+
+```lua
+require("lualine").setup({
+  sections = {
+    lualine_x = { require("agent-review").lualine() },
+  },
+})
+```
+
+Overrides:
+
+```lua
+require("agent-review").lualine({
+  icon = "",
+  color = "DiagnosticInfo",
+  show_zero = true,       -- keep visible when count is 0
+  format = "%s %d notes", -- args are (icon, count)
+  on_click = function() vim.cmd("AgentReviewExport") end,
+})
+```
+
 ## Testing
 
 Run the smoke test from the repo root:
